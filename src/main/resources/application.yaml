@@ -4,10 +4,10 @@ quarkus:
 
   datasource:
     db-kind: postgresql
-    username: username
-    password: password
+    username: fakt-user
+    password: fakt-password
     jdbc:
-      url: jdbc:postgresql://localhost:5432/database
+      url: jdbc:postgresql://localhost:5432/fakt
 
   hibernate-orm:
     database:
@@ -21,7 +21,7 @@ quarkus:
 app:
   idp:
     url: https://auth.pausegarra.es/realms/principal
-    client-id: client-id
+    client-id: fakt-private
 
 mp:
   jwt:
