@@ -8,6 +8,8 @@ import es.pausegarra.fakt.customers.infrastructure.requests.CreateCustomerReques
 import es.pausegarra.fakt.mother.CustomerMother;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
+import io.restassured.http.ContentType;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -17,6 +19,34 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
 public class CreateCustomerIT extends IntegrationTest {
+
+  @Transactional
+  public CustomerEntity createCustomerWithCustomEmail() {
+    CustomerEntity entity = CustomerMother.random()
+      .id(null)
+      .email("test@test.com")
+      .build();
+
+    em.persist(entity);
+
+    em.flush();
+
+    return entity;
+  }
+
+  @Transactional
+  public CustomerEntity createCustomerWithCustomNif() {
+    CustomerEntity entity = CustomerMother.random()
+      .id(null)
+      .nif("123456789")
+      .build();
+
+    em.persist(entity);
+
+    em.flush();
+
+    return entity;
+  }
 
   @Test
   @TestSecurity(
@@ -86,6 +116,71 @@ public class CreateCustomerIT extends IntegrationTest {
       .body("errors.size()", is(8))
       .body("errors.field", hasItems("handle.dto.name", "handle.dto.postcode", "handle.dto.country", "handle.dto.county", "handle.dto.address", "handle.dto.email", "handle.dto.city", "handle.dto.nif"))
       .body("errors.message", hasItem("must not be blank"));
+  }
+
+  @Test
+  @TestSecurity(
+    user = "test",
+    roles = {"customers#create"}
+  )
+  public void shouldReturn400IfEmailIsInvalid() throws JsonProcessingException {
+    CreateCustomerRequest request = new CreateCustomerRequest("name", "email", "null", "null", "null", "null", "null", "null");
+    String body = objectMapper.writeValueAsString(request);
+
+    given()
+      .body(body)
+      .contentType(ContentType.JSON)
+      .when()
+      .post("/customers")
+      .then()
+      .statusCode(400)
+      .body("errors.size()", is(1))
+      .body("errors.field", hasItems("handle.dto.email"))
+      .body("errors.message", hasItem("must be a well-formed email address"));
+  }
+
+  @Test
+  @TestSecurity(
+    user = "test",
+    roles = {"customers#create"}
+  )
+  public void shouldReturn400IfEmailAlreadyExists() throws JsonProcessingException {
+    CustomerEntity entity = createCustomerWithCustomEmail();
+    CreateCustomerRequest request = new CreateCustomerRequest(entity.getName(), entity.getEmail(), "null", "null", "null", "null", "null", "null");
+    String body = objectMapper.writeValueAsString(request);
+
+    given()
+      .body(body)
+      .contentType(ContentType.JSON)
+      .when()
+      .post("/customers")
+      .then()
+      .statusCode(400)
+      .body("code", is("CUSTOMER_ALREADY_EXISTS"))
+      .body("message", notNullValue())
+      .body("status", is(400));
+  }
+
+  @Test
+  @TestSecurity(
+    user = "test",
+    roles = {"customers#create"}
+  )
+  public void shouldReturn400IfNifAlreadyExists() throws JsonProcessingException {
+    CustomerEntity entity = createCustomerWithCustomNif();
+    CreateCustomerRequest request = new CreateCustomerRequest(entity.getName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null");
+    String body = objectMapper.writeValueAsString(request);
+
+    given()
+      .body(body)
+      .contentType(ContentType.JSON)
+      .when()
+      .post("/customers")
+      .then()
+      .statusCode(400)
+      .body("code", is("CUSTOMER_ALREADY_EXISTS"))
+      .body("message", notNullValue())
+      .body("status", is(400));
   }
 
   @Test

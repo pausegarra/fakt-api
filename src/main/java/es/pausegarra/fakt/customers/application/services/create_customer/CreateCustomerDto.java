@@ -1,10 +1,11 @@
 package es.pausegarra.fakt.customers.application.services.create_customer;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record CreateCustomerDto(
   @NotBlank String name,
-  @NotBlank String email,
+  @NotBlank@Email String email,
   @NotBlank String country,
   @NotBlank String nif,
   @NotBlank String address,
