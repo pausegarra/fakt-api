@@ -3,7 +3,7 @@ package es.pausegarra.fakt.arch;
 public abstract class BaseArchTest {
 
   // PACKAGES
-  protected static final String BASE_PACKAGE = "es.pausegarra.russian_cheatsheet";
+  protected static final String BASE_PACKAGE = "es.pausegarra.fakt";
 
   protected static final String DOMAIN_PACKAGE = BASE_PACKAGE + "..domain..";
 

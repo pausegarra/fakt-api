@@ -21,11 +21,7 @@ public abstract class IntegrationTest {
   @BeforeEach
   @Transactional
   public void cleanUp() {
-    em.createNativeQuery("TRUNCATE TABLE letters CASCADE")
-      .executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE words CASCADE")
-      .executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE verb_conjugations CASCADE")
+    em.createNativeQuery("TRUNCATE TABLE customers CASCADE")
       .executeUpdate();
   }
 
