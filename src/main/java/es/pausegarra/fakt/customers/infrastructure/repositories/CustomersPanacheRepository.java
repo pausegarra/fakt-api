@@ -11,6 +11,8 @@ import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 
+import java.util.Optional;
+
 @ApplicationScoped
 public class CustomersPanacheRepository implements CustomersRepository, PanacheRepository<CustomerEntity> {
 
@@ -48,6 +50,21 @@ public class CustomersPanacheRepository implements CustomersRepository, PanacheR
       pageInfo.hasNextPage(),
       pageInfo.hasPreviousPage()
     );
+  }
+
+  @Override
+  public CustomerEntity save(CustomerEntity customer) {
+    return getEntityManager()
+      .merge(customer);
+  }
+
+  @Override
+  public Optional<CustomerEntity> findByNifOrEmail(String nif, String email) {
+    return find(
+      "lower(nif) like ?1 or lower(email) like ?2",
+      nif,
+      email
+    ).firstResultOptional();
   }
 
 }

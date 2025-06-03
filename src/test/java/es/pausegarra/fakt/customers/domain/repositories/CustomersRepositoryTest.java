@@ -10,7 +10,9 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 class CustomersRepositoryTest extends IntegrationTest {
@@ -27,6 +29,17 @@ class CustomersRepositoryTest extends IntegrationTest {
     return entity;
   }
 
+  @Transactional
+  public void createCustomerWithCustomNifAndEmail() {
+    CustomerEntity entity = CustomerMother.random()
+      .id(null)
+      .nif("123456789")
+      .email("test@test.com")
+      .build();
+
+    em.persist(entity);
+  }
+
   @Test
   public void shouldFindByCriteria() {
     CustomerEntity entity = createCustomer();
@@ -36,6 +49,40 @@ class CustomersRepositoryTest extends IntegrationTest {
 
     assertEquals(1, customers.data().size());
     assertEquals(entity.getName(), customers.data().getFirst().getName());
+  }
+
+  @Test
+  @Transactional
+  public void shouldSaveCustomer() {
+    CustomerEntity entity = CustomerMother.random()
+      .id(null)
+      .build();
+
+    CustomerEntity saved = repository.save(entity);
+
+    assertNotNull(saved);
+    assertEquals(entity.getName(), saved.getName());
+
+    CustomerEntity found = em.find(CustomerEntity.class, saved.getId());
+
+    assertNotNull(found);
+    assertEquals(entity.getName(), found.getName());
+  }
+
+  @Test
+  public void shouldFindByNifOrEmail() {
+    createCustomerWithCustomNifAndEmail();
+
+    Optional<CustomerEntity> found = repository.findByNifOrEmail("123456789", "test@test.com");
+
+    assertTrue(found.isPresent());
+  }
+
+  @Test
+  public void shouldReturnEmptyOptionalIfNotFound() {
+    Optional<CustomerEntity> found = repository.findByNifOrEmail("000000000", "not-found@test.com");
+
+    assertFalse(found.isPresent());
   }
 
 }

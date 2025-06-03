@@ -23,10 +23,12 @@ public class CustomerEntity {
 
   private final String name;
 
+  @Column(name = "email", unique = true)
   private final String email;
 
   private final String country;
 
+  @Column(name = "nif", unique = true)
   private final String nif;
 
   private final String address;
