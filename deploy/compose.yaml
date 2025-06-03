@@ -1,0 +1,11 @@
+version: '3.2'
+
+services:
+  service-name:
+    container_name: container-name
+    image: psegarra/image-name:${VERSION}
+    ports:
+      - "8080:8080"
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
