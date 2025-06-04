@@ -85,4 +85,14 @@ class CustomersRepositoryTest extends IntegrationTest {
     assertFalse(found.isPresent());
   }
 
+  @Test
+  public void shouldFindById() {
+    CustomerEntity entity = createCustomer();
+
+    Optional<CustomerEntity> found = repository.getById(entity.getId());
+
+    assertTrue(found.isPresent());
+    assertEquals(entity.getId(), found.get().getId());
+  }
+
 }

@@ -7,14 +7,16 @@ import es.pausegarra.fakt.customers.domain.entities.CustomerEntity;
 import es.pausegarra.fakt.customers.domain.repositories.CustomersRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @ApplicationScoped
-public class CustomersPanacheRepository implements CustomersRepository, PanacheRepository<CustomerEntity> {
+public class CustomersPanacheRepository implements CustomersRepository, PanacheRepositoryBase<CustomerEntity, UUID> {
 
   @Override
   public Paginated<CustomerEntity> findByCriteria(CustomerSearchCriteria criteria) {
@@ -65,6 +67,11 @@ public class CustomersPanacheRepository implements CustomersRepository, PanacheR
       nif,
       email
     ).firstResultOptional();
+  }
+
+  @Override
+  public Optional<CustomerEntity> getById(UUID id) {
+    return findByIdOptional(id);
   }
 
 }

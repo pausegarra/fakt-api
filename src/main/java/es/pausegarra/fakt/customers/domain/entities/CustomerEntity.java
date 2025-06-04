@@ -19,6 +19,7 @@ public class CustomerEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
+  @Column(name = "id", columnDefinition = "uuid")
   private final UUID id;
 
   private final String name;

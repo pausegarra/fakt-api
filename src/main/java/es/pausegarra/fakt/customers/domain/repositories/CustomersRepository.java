@@ -5,6 +5,7 @@ import es.pausegarra.fakt.customers.domain.criterias.CustomerSearchCriteria;
 import es.pausegarra.fakt.customers.domain.entities.CustomerEntity;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface CustomersRepository {
 
@@ -13,5 +14,7 @@ public interface CustomersRepository {
   CustomerEntity save(CustomerEntity customer);
 
   Optional<CustomerEntity> findByNifOrEmail(String nif, String email);
+
+  Optional<CustomerEntity> getById(UUID id);
 
 }
