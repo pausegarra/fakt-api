@@ -17,4 +17,6 @@ public interface CustomersRepository {
 
   Optional<CustomerEntity> getById(UUID id);
 
+  void delete(UUID id);
+
 }

@@ -6,7 +6,6 @@ import es.pausegarra.fakt.customers.domain.criterias.CustomerSearchCriteria;
 import es.pausegarra.fakt.customers.domain.entities.CustomerEntity;
 import es.pausegarra.fakt.customers.domain.repositories.CustomersRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
@@ -72,6 +71,11 @@ public class CustomersPanacheRepository implements CustomersRepository, PanacheR
   @Override
   public Optional<CustomerEntity> getById(UUID id) {
     return findByIdOptional(id);
+  }
+
+  @Override
+  public void delete(UUID id) {
+    deleteById(id);
   }
 
 }

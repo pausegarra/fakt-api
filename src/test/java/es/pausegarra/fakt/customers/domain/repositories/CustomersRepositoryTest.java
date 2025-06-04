@@ -112,4 +112,16 @@ class CustomersRepositoryTest extends IntegrationTest {
     assertEquals(updated.getName(), found.getName());
   }
 
+  @Test
+  @Transactional
+  public void shouldDeleteCustomer() {
+    CustomerEntity entity = createCustomer();
+
+    repository.delete(entity.getId());
+
+    CustomerEntity found = em.find(CustomerEntity.class, entity.getId());
+
+    assertNull(found);
+  }
+
 }
