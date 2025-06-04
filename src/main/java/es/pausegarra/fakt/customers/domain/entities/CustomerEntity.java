@@ -56,4 +56,28 @@ public class CustomerEntity {
     return new CustomerEntity(null, name, email, country, nif, address, postcode, city, county, new AuditFields());
   }
 
+  public CustomerEntity update(
+    String name,
+    String email,
+    String country,
+    String nif,
+    String address,
+    String postcode,
+    String city,
+    String county
+  ) {
+    return new CustomerEntity(
+      id,
+      name,
+      email,
+      country,
+      nif,
+      address,
+      postcode,
+      city,
+      county,
+      audit
+    );
+  }
+
 }

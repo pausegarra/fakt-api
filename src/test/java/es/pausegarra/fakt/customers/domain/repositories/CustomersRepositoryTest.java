@@ -95,4 +95,21 @@ class CustomersRepositoryTest extends IntegrationTest {
     assertEquals(entity.getId(), found.get().getId());
   }
 
+  @Test
+  @Transactional
+  public void shouldUpdateCustomer() {
+    CustomerEntity entity = createCustomer();
+
+    CustomerEntity updated = CustomerMother.random()
+      .id(entity.getId())
+      .name("updated")
+      .build();
+
+    repository.save(updated);
+
+    CustomerEntity found = em.find(CustomerEntity.class, entity.getId());
+
+    assertEquals(updated.getName(), found.getName());
+  }
+
 }

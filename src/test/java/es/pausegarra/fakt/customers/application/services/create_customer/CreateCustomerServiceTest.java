@@ -2,7 +2,7 @@ package es.pausegarra.fakt.customers.application.services.create_customer;
 
 import es.pausegarra.fakt.customers.application.dto.CustomerDto;
 import es.pausegarra.fakt.customers.domain.entities.CustomerEntity;
-import es.pausegarra.fakt.customers.domain.exception.CustomerAlreadyExists;
+import es.pausegarra.fakt.customers.domain.exception.NifOrEmailAlreadyExists;
 import es.pausegarra.fakt.customers.domain.repositories.CustomersRepository;
 import es.pausegarra.fakt.mother.CustomerMother;
 import org.junit.jupiter.api.Test;
@@ -66,7 +66,7 @@ class CreateCustomerServiceTest {
       entity.getCounty()
     );
 
-    assertThrows(CustomerAlreadyExists.class, () -> service.handle(dto));
+    assertThrows(NifOrEmailAlreadyExists.class, () -> service.handle(dto));
   }
 
 }

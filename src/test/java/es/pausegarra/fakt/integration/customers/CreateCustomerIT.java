@@ -87,14 +87,14 @@ public class CreateCustomerIT extends IntegrationTest {
 
     CustomerEntity found = em.find(CustomerEntity.class, created.id());
     assertNotNull(created);
-    assertEquals(entity.getName(), found.getName());
-    assertEquals(entity.getEmail(), found.getEmail());
-    assertEquals(entity.getCountry(), found.getCountry());
-    assertEquals(entity.getNif(), found.getNif());
-    assertEquals(entity.getAddress(), found.getAddress());
-    assertEquals(entity.getPostcode(), found.getPostcode());
-    assertEquals(entity.getCity(), found.getCity());
-    assertEquals(entity.getCounty(), found.getCounty());
+    assertEquals(request.name(), found.getName());
+    assertEquals(request.email(), found.getEmail());
+    assertEquals(request.country(), found.getCountry());
+    assertEquals(request.nif(), found.getNif());
+    assertEquals(request.address(), found.getAddress());
+    assertEquals(request.postcode(), found.getPostcode());
+    assertEquals(request.city(), found.getCity());
+    assertEquals(request.county(), found.getCounty());
   }
 
   @Test
@@ -156,7 +156,7 @@ public class CreateCustomerIT extends IntegrationTest {
       .post("/customers")
       .then()
       .statusCode(400)
-      .body("code", is("CUSTOMER_ALREADY_EXISTS"))
+      .body("code", is("NIF_OR_EMAIL_ALREADY_EXISTS"))
       .body("message", notNullValue())
       .body("status", is(400));
   }
@@ -178,7 +178,7 @@ public class CreateCustomerIT extends IntegrationTest {
       .post("/customers")
       .then()
       .statusCode(400)
-      .body("code", is("CUSTOMER_ALREADY_EXISTS"))
+      .body("code", is("NIF_OR_EMAIL_ALREADY_EXISTS"))
       .body("message", notNullValue())
       .body("status", is(400));
   }

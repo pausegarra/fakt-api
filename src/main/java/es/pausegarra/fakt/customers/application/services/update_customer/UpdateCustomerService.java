@@ -1,8 +1,9 @@
-package es.pausegarra.fakt.customers.application.services.create_customer;
+package es.pausegarra.fakt.customers.application.services.update_customer;
 
 import es.pausegarra.fakt.common.application.interfaces.Service;
 import es.pausegarra.fakt.customers.application.dto.CustomerDto;
 import es.pausegarra.fakt.customers.domain.entities.CustomerEntity;
+import es.pausegarra.fakt.customers.domain.exception.CustomerNotFound;
 import es.pausegarra.fakt.customers.domain.exception.NifOrEmailAlreadyExists;
 import es.pausegarra.fakt.customers.domain.repositories.CustomersRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -11,19 +12,22 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @ApplicationScoped
 @RequiredArgsConstructor
-public class CreateCustomerService implements Service<CreateCustomerDto, CustomerDto> {
+public class UpdateCustomerService implements Service<UpdateCustomerDto, CustomerDto> {
 
   private final CustomersRepository repository;
 
   @Override
   @Transactional
-  public CustomerDto handle(@Valid CreateCustomerDto dto) {
-    ensureEmailOrNifDoesNotExist(dto.nif(), dto.email());
+  public CustomerDto handle(@Valid UpdateCustomerDto dto) {
+    CustomerEntity entity = findById(dto.id());
 
-    CustomerEntity entity = CustomerEntity.create(
+    ensureNifOrEmailNotAlreadyExists(dto.nif(), dto.email());
+
+    CustomerEntity toUpdate = entity.update(
       dto.name(),
       dto.email(),
       dto.country(),
@@ -33,12 +37,18 @@ public class CreateCustomerService implements Service<CreateCustomerDto, Custome
       dto.city(),
       dto.county()
     );
-    CustomerEntity saved = repository.save(entity);
 
-    return CustomerDto.fromEntity(saved);
+    CustomerEntity updated = repository.save(toUpdate);
+
+    return CustomerDto.fromEntity(updated);
   }
 
-  private void ensureEmailOrNifDoesNotExist(String nif, String email) {
+  private CustomerEntity findById(UUID id) {
+    return repository.getById(id)
+      .orElseThrow(() -> new CustomerNotFound(id.toString()));
+  }
+
+  private void ensureNifOrEmailNotAlreadyExists(String nif, String email) {
     Optional<CustomerEntity> found = repository.findByNifOrEmail(nif, email);
 
     if (found.isPresent()) {
