@@ -9,9 +9,13 @@ quarkus:
     jdbc:
       url: jdbc:postgresql://localhost:5432/fakt
 
+  flyway:
+    migrate-at-start: true
+
   hibernate-orm:
     database:
-      generation: update
+      generation: none
+    format-sql: true
 
   rest-client:
     keycloak:
