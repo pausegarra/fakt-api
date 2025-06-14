@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record CreateCustomerDto(
   @NotBlank String name,
+  @NotBlank String contactName,
   @NotBlank@Email String email,
   @NotBlank String country,
   @NotBlank String nif,
@@ -16,6 +17,7 @@ public record CreateCustomerDto(
 
   public static CreateCustomerDto create(
     String name,
+    String contactName,
     String email,
     String country,
     String nif,
@@ -24,7 +26,7 @@ public record CreateCustomerDto(
     String city,
     String county
   ) {
-    return new CreateCustomerDto(name, email, country, nif, address, postcode, city, county);
+    return new CreateCustomerDto(name, contactName, email, country, nif, address, postcode, city, county);
   }
 
 }

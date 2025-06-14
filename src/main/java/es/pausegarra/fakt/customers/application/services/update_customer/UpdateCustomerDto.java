@@ -9,6 +9,7 @@ import java.util.UUID;
 public record UpdateCustomerDto(
   @NotNull UUID id,
   @NotBlank String name,
+  @NotBlank String contactName,
   @NotBlank @Email String email,
   @NotBlank String country,
   @NotBlank String nif,
@@ -21,6 +22,7 @@ public record UpdateCustomerDto(
   public static UpdateCustomerDto from(
     String id,
     String name,
+    String contactName,
     String email,
     String country,
     String nif,
@@ -29,7 +31,7 @@ public record UpdateCustomerDto(
     String city,
     String county
   ) {
-    return new UpdateCustomerDto(UUID.fromString(id), name, email, country, nif, address, postcode, city, county);
+    return new UpdateCustomerDto(UUID.fromString(id), name, contactName, email, country, nif, address, postcode, city, county);
   }
 
 }

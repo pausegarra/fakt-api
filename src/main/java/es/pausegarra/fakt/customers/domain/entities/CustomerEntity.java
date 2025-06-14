@@ -24,6 +24,8 @@ public class CustomerEntity {
 
   private final String name;
 
+  private final String contactName;
+
   @Column(name = "email", unique = true)
   private final String email;
 
@@ -45,6 +47,7 @@ public class CustomerEntity {
 
   public static CustomerEntity create(
     String name,
+    String contactName,
     String email,
     String country,
     String nif,
@@ -53,11 +56,12 @@ public class CustomerEntity {
     String city,
     String county
   ) {
-    return new CustomerEntity(null, name, email, country, nif, address, postcode, city, county, new AuditFields());
+    return new CustomerEntity(null, name, contactName, email, country, nif, address, postcode, city, county, new AuditFields());
   }
 
   public CustomerEntity update(
     String name,
+    String contactName,
     String email,
     String country,
     String nif,
@@ -69,6 +73,7 @@ public class CustomerEntity {
     return new CustomerEntity(
       id,
       name,
+      contactName,
       email,
       country,
       nif,

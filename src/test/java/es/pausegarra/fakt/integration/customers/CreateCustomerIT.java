@@ -57,6 +57,7 @@ public class CreateCustomerIT extends IntegrationTest {
     CustomerEntity entity = CustomerMother.random().id(null).build();
     CreateCustomerRequest request = new CreateCustomerRequest(
       entity.getName(),
+      entity.getContactName(),
       entity.getEmail(),
       entity.getCountry(),
       entity.getNif(),
@@ -75,6 +76,7 @@ public class CreateCustomerIT extends IntegrationTest {
       .statusCode(201)
       .body("id", is(notNullValue()))
       .body("name", is(entity.getName()))
+      .body("contactName", is(entity.getContactName()))
       .body("email", is(entity.getEmail()))
       .body("country", is(entity.getCountry()))
       .body("nif", is(entity.getNif()))
@@ -88,6 +90,7 @@ public class CreateCustomerIT extends IntegrationTest {
     CustomerEntity found = em.find(CustomerEntity.class, created.id());
     assertNotNull(created);
     assertEquals(request.name(), found.getName());
+    assertEquals(request.contactName(), found.getContactName());
     assertEquals(request.email(), found.getEmail());
     assertEquals(request.country(), found.getCountry());
     assertEquals(request.nif(), found.getNif());
@@ -103,7 +106,7 @@ public class CreateCustomerIT extends IntegrationTest {
     roles = {"customers#create"}
   )
   public void shouldReturn400IfRequestIsInvalid() throws JsonProcessingException {
-    CreateCustomerRequest request = new CreateCustomerRequest(null, null, null, null, null, null, null, null);
+    CreateCustomerRequest request = new CreateCustomerRequest(null, null, null, null, null, null, null, null, null);
     String body = objectMapper.writeValueAsString(request);
 
     given()
@@ -113,8 +116,8 @@ public class CreateCustomerIT extends IntegrationTest {
       .post("/customers")
       .then()
       .statusCode(400)
-      .body("errors.size()", is(8))
-      .body("errors.field", hasItems("handle.dto.name", "handle.dto.postcode", "handle.dto.country", "handle.dto.county", "handle.dto.address", "handle.dto.email", "handle.dto.city", "handle.dto.nif"))
+      .body("errors.size()", is(9))
+      .body("errors.field", hasItems("handle.dto.name", "handle.dto.contactName", "handle.dto.postcode", "handle.dto.country", "handle.dto.county", "handle.dto.address", "handle.dto.email", "handle.dto.city", "handle.dto.nif"))
       .body("errors.message", hasItem("must not be blank"));
   }
 
@@ -124,7 +127,7 @@ public class CreateCustomerIT extends IntegrationTest {
     roles = {"customers#create"}
   )
   public void shouldReturn400IfEmailIsInvalid() throws JsonProcessingException {
-    CreateCustomerRequest request = new CreateCustomerRequest("name", "email", "null", "null", "null", "null", "null", "null");
+    CreateCustomerRequest request = new CreateCustomerRequest("name", "email", "null", "null", "null", "null", "null", "null", "null");
     String body = objectMapper.writeValueAsString(request);
 
     given()
@@ -146,7 +149,7 @@ public class CreateCustomerIT extends IntegrationTest {
   )
   public void shouldReturn400IfEmailAlreadyExists() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomEmail();
-    CreateCustomerRequest request = new CreateCustomerRequest(entity.getName(), entity.getEmail(), "null", "null", "null", "null", "null", "null");
+    CreateCustomerRequest request = new CreateCustomerRequest(entity.getName(), "null", entity.getEmail(), "null", "null", "null", "null", "null", "null");
     String body = objectMapper.writeValueAsString(request);
 
     given()
@@ -168,7 +171,7 @@ public class CreateCustomerIT extends IntegrationTest {
   )
   public void shouldReturn400IfNifAlreadyExists() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomNif();
-    CreateCustomerRequest request = new CreateCustomerRequest(entity.getName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null");
+    CreateCustomerRequest request = new CreateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null");
     String body = objectMapper.writeValueAsString(request);
 
     given()

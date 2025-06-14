@@ -39,6 +39,7 @@ public class FindCustomerByIdIT extends IntegrationTest {
       .statusCode(200)
       .body("id", is(entity.getId().toString()))
       .body("name", is(entity.getName()))
+      .body("contactName", is(entity.getContactName()))
       .body("email", is(entity.getEmail()))
       .body("country", is(entity.getCountry()))
       .body("nif", is(entity.getNif()))

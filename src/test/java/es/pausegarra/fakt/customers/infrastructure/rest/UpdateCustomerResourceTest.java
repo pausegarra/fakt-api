@@ -34,6 +34,7 @@ class UpdateCustomerResourceTest {
 
     UpdateCustomerRequest to = new UpdateCustomerRequest(
       "name",
+      "contactName",
       "email",
       "country",
       "nif",

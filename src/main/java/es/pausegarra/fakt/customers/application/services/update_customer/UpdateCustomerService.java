@@ -29,6 +29,7 @@ public class UpdateCustomerService implements Service<UpdateCustomerDto, Custome
 
     CustomerEntity toUpdate = entity.update(
       dto.name(),
+      dto.contactName(),
       dto.email(),
       dto.country(),
       dto.nif(),

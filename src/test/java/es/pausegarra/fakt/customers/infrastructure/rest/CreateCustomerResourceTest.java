@@ -34,6 +34,7 @@ class CreateCustomerResourceTest {
 
     CreateCustomerRequest request = new CreateCustomerRequest(
       "name",
+      "contactName",
       "email",
       "country",
       "nif",

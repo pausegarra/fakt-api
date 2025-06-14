@@ -8,6 +8,7 @@ import java.util.UUID;
 public record CustomerDto(
   UUID id,
   String name,
+  String contactName,
   String email,
   String country,
   String nif,
@@ -23,6 +24,7 @@ public record CustomerDto(
     return new CustomerDto(
       entity.getId(),
       entity.getName(),
+      entity.getContactName(),
       entity.getEmail(),
       entity.getCountry(),
       entity.getNif(),

@@ -41,6 +41,7 @@ class UpdateCustomerServiceTest {
     UpdateCustomerDto dto = UpdateCustomerDto.from(
       entity.getId().toString(),
       "name",
+      "contactName",
       "email",
       "country",
       "nif",
@@ -65,6 +66,7 @@ class UpdateCustomerServiceTest {
     UpdateCustomerDto dto = UpdateCustomerDto.from(
       UUID.randomUUID().toString(),
       "name",
+      "contactName",
       "email",
       "country",
       "nif",
@@ -86,6 +88,7 @@ class UpdateCustomerServiceTest {
     UpdateCustomerDto dto = UpdateCustomerDto.from(
       entity.getId().toString(),
       "name",
+      "contactName",
       "email",
       "country",
       "nif",

@@ -19,6 +19,7 @@ public class CreateCustomerResource implements CreateCustomerApiSpec {
   public RestResponse<CustomerDto> createClient(CreateCustomerRequest request) {
     CreateCustomerDto dto = CreateCustomerDto.create(
       request.name(),
+      request.contactName(),
       request.email(),
       request.country(),
       request.nif(),

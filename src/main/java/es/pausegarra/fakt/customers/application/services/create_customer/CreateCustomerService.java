@@ -25,6 +25,7 @@ public class CreateCustomerService implements Service<CreateCustomerDto, Custome
 
     CustomerEntity entity = CustomerEntity.create(
       dto.name(),
+      dto.contactName(),
       dto.email(),
       dto.country(),
       dto.nif(),

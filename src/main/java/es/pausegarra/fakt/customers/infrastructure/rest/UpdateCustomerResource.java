@@ -20,6 +20,7 @@ public class UpdateCustomerResource implements UpdateCustomerApiSpec {
     UpdateCustomerDto dto = UpdateCustomerDto.from(
       id,
       request.name(),
+      request.contactName(),
       request.email(),
       request.country(),
       request.nif(),

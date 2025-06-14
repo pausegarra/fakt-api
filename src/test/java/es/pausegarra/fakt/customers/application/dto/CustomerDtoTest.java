@@ -16,6 +16,7 @@ class CustomerDtoTest {
 
     assertEquals(entity.getId(), dto.id());
     assertEquals(entity.getName(), dto.name());
+    assertEquals(entity.getContactName(), dto.contactName());
     assertEquals(entity.getEmail(), dto.email());
     assertEquals(entity.getCountry(), dto.country());
     assertEquals(entity.getNif(), dto.nif());

@@ -35,6 +35,7 @@ class CreateCustomerServiceTest {
 
     CreateCustomerDto dto = CreateCustomerDto.create(
       entity.getName(),
+      entity.getContactName(),
       entity.getEmail(),
       entity.getCountry(),
       entity.getNif(),
@@ -57,6 +58,7 @@ class CreateCustomerServiceTest {
 
     CreateCustomerDto dto = CreateCustomerDto.create(
       entity.getName(),
+      entity.getContactName(),
       entity.getEmail(),
       entity.getCountry(),
       entity.getNif(),

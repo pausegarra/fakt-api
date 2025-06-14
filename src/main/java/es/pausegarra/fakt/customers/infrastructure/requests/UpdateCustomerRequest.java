@@ -2,6 +2,7 @@ package es.pausegarra.fakt.customers.infrastructure.requests;
 
 public record UpdateCustomerRequest(
   String name,
+  String contactName,
   String email,
   String country,
   String nif,

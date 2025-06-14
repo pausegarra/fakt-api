@@ -62,6 +62,7 @@ public class UpdateCustomerIT extends IntegrationTest {
     CustomerEntity entity = createCustomer();
     UpdateCustomerRequest request = new UpdateCustomerRequest(
       "updated",
+      "contactName",
       "updated@test.com",
       "country",
       "nif",
@@ -107,6 +108,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   public void shouldReturn404IfCustomerNotFound() throws JsonProcessingException {
     UpdateCustomerRequest request = new UpdateCustomerRequest(
       "updated",
+      "contactName",
       "updated@test.com",
       "country",
       "nif",
@@ -148,7 +150,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   @Test
   @TestSecurity(user = "test", roles = "customers#edit")
   public void shouldReturn400IfRequestIsInvalid() throws JsonProcessingException {
-    UpdateCustomerRequest request = new UpdateCustomerRequest(null, null, null, null, null, null, null, null);
+    UpdateCustomerRequest request = new UpdateCustomerRequest(null, null, null, null, null, null, null, null, null);
     String json = objectMapper.writeValueAsString(request);
 
     given()
@@ -158,8 +160,8 @@ public class UpdateCustomerIT extends IntegrationTest {
       .put("/customers/{id}", UUID.randomUUID().toString())
       .then()
       .statusCode(400)
-      .body("errors.size()", is(8))
-      .body("errors.field", hasItems("handle.dto.name", "handle.dto.postcode", "handle.dto.country", "handle.dto.county", "handle.dto.address", "handle.dto.email", "handle.dto.city", "handle.dto.nif"))
+      .body("errors.size()", is(9))
+      .body("errors.field", hasItems("handle.dto.name", "handle.dto.contactName", "handle.dto.postcode", "handle.dto.country", "handle.dto.county", "handle.dto.address", "handle.dto.email", "handle.dto.city", "handle.dto.nif"))
       .body("errors.message", hasItem("must not be blank"));
   }
 
@@ -167,7 +169,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   @TestSecurity(user = "test", roles = "customers#edit")
   public void shouldReturn400IfEmailIsInvalid() throws JsonProcessingException {
     CustomerEntity entity = createCustomer();
-    UpdateCustomerRequest request = new UpdateCustomerRequest("name", "email", "null", "null", "null", "null", "null", "null");
+    UpdateCustomerRequest request = new UpdateCustomerRequest("name", "email", "null", "null", "null", "null", "null", "null", "null");
     String json = objectMapper.writeValueAsString(request);
 
     given()
@@ -189,7 +191,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   )
   public void shouldReturn400IfEmailAlreadyExists() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomEmail();
-    UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), "test@test.com", "null", "null", "null", "null", "null", "null");
+    UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", "null", "null", "null", "null", "null");
     String json = objectMapper.writeValueAsString(request);
 
     given()
@@ -211,7 +213,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   )
   public void shouldReturn400IfNifAlreadyExists() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomNif();
-    UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null");
+    UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null");
     String json = objectMapper.writeValueAsString(request);
 
     given()
