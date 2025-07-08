@@ -20,6 +20,7 @@ public class CustomerMother {
       .postcode(MotherCreator.random().number().toString())
       .city(MotherCreator.random().address().toString())
       .county(MotherCreator.random().address().toString())
+      .emailExtraRecipients(MotherCreator.random().internet().emailAddress())
       .audit(new AuditFields(
         Instant.now(),
         Instant.now()

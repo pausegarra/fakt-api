@@ -41,7 +41,8 @@ class UpdateCustomerResourceTest {
       "address",
       "postcode",
       "city",
-      "county"
+      "county",
+      null
     );
     RestResponse<CustomerDto> response = resource.updateCustomer(customerDto.id().toString(), to);
 

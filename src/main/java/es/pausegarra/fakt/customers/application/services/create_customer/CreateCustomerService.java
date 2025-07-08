@@ -32,7 +32,8 @@ public class CreateCustomerService implements Service<CreateCustomerDto, Custome
       dto.address(),
       dto.postcode(),
       dto.city(),
-      dto.county()
+      dto.county(),
+      dto.emailExtraRecipients()
     );
     CustomerEntity saved = repository.save(entity);
 

@@ -12,7 +12,8 @@ public record CreateCustomerDto(
   @NotBlank String address,
   @NotBlank String postcode,
   @NotBlank String city,
-  @NotBlank String county
+  @NotBlank String county,
+  String emailExtraRecipients
 ) {
 
   public static CreateCustomerDto create(
@@ -24,9 +25,10 @@ public record CreateCustomerDto(
     String address,
     String postcode,
     String city,
-    String county
+    String county,
+    String emailExtraRecipients
   ) {
-    return new CreateCustomerDto(name, contactName, email, country, nif, address, postcode, city, county);
+    return new CreateCustomerDto(name, contactName, email, country, nif, address, postcode, city, county, emailExtraRecipients);
   }
 
 }

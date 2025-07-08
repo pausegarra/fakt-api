@@ -64,7 +64,8 @@ public class CreateCustomerIT extends IntegrationTest {
       entity.getAddress(),
       entity.getPostcode(),
       entity.getCity(),
-      entity.getCounty()
+      entity.getCounty(),
+      entity.getEmailExtraRecipients()
     );
     String body = objectMapper.writeValueAsString(request);
 
@@ -84,6 +85,7 @@ public class CreateCustomerIT extends IntegrationTest {
       .body("postcode", is(entity.getPostcode()))
       .body("city", is(entity.getCity()))
       .body("county", is(entity.getCounty()))
+      .body("emailExtraRecipients", is(entity.getEmailExtraRecipients()))
       .extract()
       .as(CustomerDto.class);
 
@@ -106,7 +108,7 @@ public class CreateCustomerIT extends IntegrationTest {
     roles = {"customers#create"}
   )
   public void shouldReturn400IfRequestIsInvalid() throws JsonProcessingException {
-    CreateCustomerRequest request = new CreateCustomerRequest(null, null, null, null, null, null, null, null, null);
+    CreateCustomerRequest request = new CreateCustomerRequest(null, null, null, null, null, null, null, null, null, null);
     String body = objectMapper.writeValueAsString(request);
 
     given()
@@ -127,7 +129,7 @@ public class CreateCustomerIT extends IntegrationTest {
     roles = {"customers#create"}
   )
   public void shouldReturn400IfEmailIsInvalid() throws JsonProcessingException {
-    CreateCustomerRequest request = new CreateCustomerRequest("name", "email", "null", "null", "null", "null", "null", "null", "null");
+    CreateCustomerRequest request = new CreateCustomerRequest("name", "email", "null", "null", "null", "null", "null", "null", "null", "null");
     String body = objectMapper.writeValueAsString(request);
 
     given()
@@ -149,7 +151,7 @@ public class CreateCustomerIT extends IntegrationTest {
   )
   public void shouldReturn400IfEmailAlreadyExists() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomEmail();
-    CreateCustomerRequest request = new CreateCustomerRequest(entity.getName(), "null", entity.getEmail(), "null", "null", "null", "null", "null", "null");
+    CreateCustomerRequest request = new CreateCustomerRequest(entity.getName(), "null", entity.getEmail(), "null", "null", "null", "null", "null", "null", null);
     String body = objectMapper.writeValueAsString(request);
 
     given()
@@ -171,7 +173,7 @@ public class CreateCustomerIT extends IntegrationTest {
   )
   public void shouldReturn400IfNifAlreadyExists() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomNif();
-    CreateCustomerRequest request = new CreateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null");
+    CreateCustomerRequest request = new CreateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null", null);
     String body = objectMapper.writeValueAsString(request);
 
     given()

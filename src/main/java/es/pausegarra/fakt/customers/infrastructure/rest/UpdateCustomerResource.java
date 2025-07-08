@@ -27,7 +27,8 @@ public class UpdateCustomerResource implements UpdateCustomerApiSpec {
       request.address(),
       request.postcode(),
       request.city(),
-      request.county()
+      request.county(),
+      request.emailExtraRecipients()
     );
     CustomerDto customerDto = service.handle(dto);
 

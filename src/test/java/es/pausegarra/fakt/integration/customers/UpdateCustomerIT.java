@@ -69,7 +69,8 @@ public class UpdateCustomerIT extends IntegrationTest {
       "address",
       "postcode",
       "city",
-      "county"
+      "county",
+      null
     );
     String json = objectMapper.writeValueAsString(request);
 
@@ -115,7 +116,8 @@ public class UpdateCustomerIT extends IntegrationTest {
       "address",
       "postcode",
       "city",
-      "county"
+      "county",
+      null
     );
     String json = objectMapper.writeValueAsString(request);
 
@@ -150,7 +152,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   @Test
   @TestSecurity(user = "test", roles = "customers#edit")
   public void shouldReturn400IfRequestIsInvalid() throws JsonProcessingException {
-    UpdateCustomerRequest request = new UpdateCustomerRequest(null, null, null, null, null, null, null, null, null);
+    UpdateCustomerRequest request = new UpdateCustomerRequest(null, null, null, null, null, null, null, null, null, null);
     String json = objectMapper.writeValueAsString(request);
 
     given()
@@ -169,7 +171,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   @TestSecurity(user = "test", roles = "customers#edit")
   public void shouldReturn400IfEmailIsInvalid() throws JsonProcessingException {
     CustomerEntity entity = createCustomer();
-    UpdateCustomerRequest request = new UpdateCustomerRequest("name", "email", "null", "null", "null", "null", "null", "null", "null");
+    UpdateCustomerRequest request = new UpdateCustomerRequest("name", "email", "null", "null", "null", "null", "null", "null", "null", null);
     String json = objectMapper.writeValueAsString(request);
 
     given()
@@ -192,7 +194,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   public void shouldReturn400IfEmailAlreadyExists() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomEmail();
     CustomerEntity toUpdate = createCustomer();
-    UpdateCustomerRequest request = new UpdateCustomerRequest(toUpdate.getName(), toUpdate.getContactName(), entity.getEmail(), "null", "null", "null", "null", "null", "null");
+    UpdateCustomerRequest request = new UpdateCustomerRequest(toUpdate.getName(), toUpdate.getContactName(), entity.getEmail(), "null", "null", "null", "null", "null", "null", null);
     String json = objectMapper.writeValueAsString(request);
 
     given()
@@ -215,7 +217,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   public void shouldReturn400IfNifAlreadyExists() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomNif();
     CustomerEntity toUpdate = createCustomer();
-    UpdateCustomerRequest request = new UpdateCustomerRequest(toUpdate.getName(), toUpdate.getContactName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null");
+    UpdateCustomerRequest request = new UpdateCustomerRequest(toUpdate.getName(), toUpdate.getContactName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null", null);
     String json = objectMapper.writeValueAsString(request);
 
     given()
@@ -237,7 +239,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   )
   public void shouldReturn200IfCustomerNifIsTheSameAsTheOldOne() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomNif();
-    UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null");
+    UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null", null);
     String json = objectMapper.writeValueAsString(request);
 
     given()
@@ -256,7 +258,7 @@ public class UpdateCustomerIT extends IntegrationTest {
   )
   public void shouldReturn200IfCustomerEmailIsTheSameAsTheOldOne() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomEmail();
-    UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", "null", "null", "null", "null", "null");
+    UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", "null", "null", "null", "null", "null", null);
     String json = objectMapper.writeValueAsString(request);
 
     given()

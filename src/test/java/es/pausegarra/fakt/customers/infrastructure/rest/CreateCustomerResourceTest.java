@@ -41,7 +41,8 @@ class CreateCustomerResourceTest {
       "address",
       "postcode",
       "city",
-      "county"
+      "county",
+      null
     );
     RestResponse<CustomerDto> result = resource.createClient(request);
 

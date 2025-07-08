@@ -42,7 +42,8 @@ class CreateCustomerServiceTest {
       entity.getAddress(),
       entity.getPostcode(),
       entity.getCity(),
-      entity.getCounty()
+      entity.getCounty(),
+      entity.getEmailExtraRecipients()
     );
     CustomerDto result = service.handle(dto);
 
@@ -65,7 +66,8 @@ class CreateCustomerServiceTest {
       entity.getAddress(),
       entity.getPostcode(),
       entity.getCity(),
-      entity.getCounty()
+      entity.getCounty(),
+      entity.getEmailExtraRecipients()
     );
 
     assertThrows(NifOrEmailAlreadyExists.class, () -> service.handle(dto));

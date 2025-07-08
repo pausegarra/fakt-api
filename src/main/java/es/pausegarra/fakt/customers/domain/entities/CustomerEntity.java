@@ -42,6 +42,9 @@ public class CustomerEntity {
 
   private final String county;
 
+  @Column(name = "email_extra_recipients")
+  private final String emailExtraRecipients;
+
   @Embedded
   private final AuditFields audit;
 
@@ -54,9 +57,10 @@ public class CustomerEntity {
     String address,
     String postcode,
     String city,
-    String county
+    String county,
+    String emailExtraRecipients
   ) {
-    return new CustomerEntity(null, name, contactName, email, country, nif, address, postcode, city, county, new AuditFields());
+    return new CustomerEntity(null, name, contactName, email, country, nif, address, postcode, city, county, emailExtraRecipients, new AuditFields());
   }
 
   public CustomerEntity update(
@@ -68,7 +72,8 @@ public class CustomerEntity {
     String address,
     String postcode,
     String city,
-    String county
+    String county,
+    String emailExtraRecipients
   ) {
     return new CustomerEntity(
       id,
@@ -81,6 +86,7 @@ public class CustomerEntity {
       postcode,
       city,
       county,
+      emailExtraRecipients,
       audit
     );
   }

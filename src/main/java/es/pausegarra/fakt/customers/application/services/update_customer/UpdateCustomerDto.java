@@ -16,7 +16,8 @@ public record UpdateCustomerDto(
   @NotBlank String address,
   @NotBlank String postcode,
   @NotBlank String city,
-  @NotBlank String county
+  @NotBlank String county,
+  String emailExtraRecipients
 ) {
 
   public static UpdateCustomerDto from(
@@ -29,9 +30,10 @@ public record UpdateCustomerDto(
     String address,
     String postcode,
     String city,
-    String county
+    String county,
+    String emailExtraRecipients
   ) {
-    return new UpdateCustomerDto(UUID.fromString(id), name, contactName, email, country, nif, address, postcode, city, county);
+    return new UpdateCustomerDto(UUID.fromString(id), name, contactName, email, country, nif, address, postcode, city, county, emailExtraRecipients);
   }
 
 }

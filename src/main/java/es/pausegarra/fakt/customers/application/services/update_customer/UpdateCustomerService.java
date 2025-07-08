@@ -36,7 +36,8 @@ public class UpdateCustomerService implements Service<UpdateCustomerDto, Custome
       dto.address(),
       dto.postcode(),
       dto.city(),
-      dto.county()
+      dto.county(),
+      dto.emailExtraRecipients()
     );
 
     CustomerEntity updated = repository.save(toUpdate);

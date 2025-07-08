@@ -26,7 +26,8 @@ public class CreateCustomerResource implements CreateCustomerApiSpec {
       request.address(),
       request.postcode(),
       request.city(),
-      request.county()
+      request.county(),
+      request.emailExtraRecipients()
     );
     CustomerDto response = service.handle(dto);
 

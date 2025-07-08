@@ -48,7 +48,8 @@ class UpdateCustomerServiceTest {
       "address",
       "postcode",
       "city",
-      "county"
+      "county",
+      null
     );
     CustomerDto result = service.handle(dto);
 
@@ -73,7 +74,8 @@ class UpdateCustomerServiceTest {
       "address",
       "postcode",
       "city",
-      "county"
+      "county",
+      null
     );
     assertThrows(CustomerNotFound.class, () -> service.handle(dto));
   }
@@ -95,7 +97,8 @@ class UpdateCustomerServiceTest {
       "address",
       "postcode",
       "city",
-      "county"
+      "county",
+      null
     );
     assertThrows(NifOrEmailAlreadyExists.class, () -> service.handle(dto));
   }

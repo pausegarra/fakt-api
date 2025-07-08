@@ -9,5 +9,6 @@ public record CreateCustomerRequest(
   String address,
   String postcode,
   String city,
-  String county
+  String county,
+  String emailExtraRecipients
 ) {}
