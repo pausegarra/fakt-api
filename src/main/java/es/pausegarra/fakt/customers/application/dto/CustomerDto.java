@@ -17,7 +17,8 @@ public record CustomerDto(
   String city,
   String county,
   Instant createdAt,
-  Instant updatedAt
+  Instant updatedAt,
+  String emailExtraRecipients
 ) {
 
   public static CustomerDto fromEntity(CustomerEntity entity) {
@@ -35,7 +36,8 @@ public record CustomerDto(
       entity.getAudit()
         .getCreatedAt(),
       entity.getAudit()
-        .getUpdatedAt()
+        .getUpdatedAt(),
+      entity.getEmailExtraRecipients()
     );
   }
 

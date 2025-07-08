@@ -46,7 +46,8 @@ public class FindCustomerByIdIT extends IntegrationTest {
       .body("address", is(entity.getAddress()))
       .body("postcode", is(entity.getPostcode()))
       .body("city", is(entity.getCity()))
-      .body("county", is(entity.getCounty()));
+      .body("county", is(entity.getCounty()))
+      .body("emailExtraRecipients", is(entity.getEmailExtraRecipients()));
   }
 
   @Test
