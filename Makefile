@@ -25,4 +25,46 @@ stop-db: ## Stop the database.
 remove-db: ## Remove the database and it's volumes.
 	docker-compose down -v
 
+CURRENT_VERSION := $(shell ./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+upgrade-major-version: ## Upgrade major version of the POM
+	@$(eval NEW_VERSION := $(shell echo $(CURRENT_VERSION) | awk -F. '{$$1+=1; $$2=0; $$3=0; print $$1"."$$2"."$$3}'))
+	@echo Setting new version to $(NEW_VERSION)
+	@./mvnw versions:set -DnewVersion=$(NEW_VERSION) -DgenerateBackupPoms=false
+	git add pom.xml
+	git commit -m "chore: upgrade to $(NEW_VERSION)"
+	git push
+
+upgrade-minor-version: ## Upgrade minor version of the POM
+	@$(eval NEW_VERSION := $(shell echo $(CURRENT_VERSION) | awk -F. '{$$2+=1; $$3=0; print $$1"."$$2"."$$3}'))
+	@echo Setting new version to $(NEW_VERSION)
+	@./mvnw versions:set -DnewVersion=$(NEW_VERSION) -DgenerateBackupPoms=false
+	git add pom.xml
+	git commit -m "chore: upgrade to $(NEW_VERSION)"
+	git push
+
+upgrade-patch-version: ## Upgrade patch version of the POM
+	@$(eval NEW_VERSION := $(shell echo $(CURRENT_VERSION) | awk -F. '{$$3+=1; print $$1"."$$2"."$$3}'))
+	@echo Setting new version to $(NEW_VERSION)
+	@./mvnw versions:set -DnewVersion=$(NEW_VERSION) -DgenerateBackupPoms=false
+	git add pom.xml
+	git commit -m "chore: upgrade to $(NEW_VERSION)"
+	git push
+
+new-migration: ## Generates a new migration file
+	@read -p "Enter migration name: " name; \
+	current_time=$$(date +"V%Y_%m_%d_%H_%M_%S"); \
+	filename="src/main/resources/db/migration/$${current_time}__$$name.sql"; \
+	touch $$filename; \
+	echo "file created: $$filename"
+
+generate-schema: ## Generate the schema
+	@rm -rf schema.sql
+	@./mvnw quarkus:dev \
+		-Dquarkus.hibernate-orm.scripts.generation=create \
+		-Dquarkus.hibernate-orm.scripts.generation.create-target=schema.sql
+
+tag: ## Tag the current version
+	git tag $(CURRENT_VERSION)
+	git push origin $(CURRENT_VERSION)
+
 .PHONY: start-db stop-db remove-db help build build-native dev run test
