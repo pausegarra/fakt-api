@@ -30,7 +30,7 @@ class CustomersRepositoryTest extends IntegrationTest {
   }
 
   @Transactional
-  public void createCustomerWithCustomNifAndEmail() {
+  public CustomerEntity createCustomerWithCustomNifAndEmail() {
     CustomerEntity entity = CustomerMother.random()
       .id(null)
       .nif("123456789")
@@ -38,6 +38,8 @@ class CustomersRepositoryTest extends IntegrationTest {
       .build();
 
     em.persist(entity);
+
+    return entity;
   }
 
   @Test
@@ -122,6 +124,26 @@ class CustomersRepositoryTest extends IntegrationTest {
     CustomerEntity found = em.find(CustomerEntity.class, entity.getId());
 
     assertNull(found);
+  }
+
+  @Test
+  public void shouldReturnEmptyOptionalIfCustomerByEmailOrNifWhereIdNeNotFound() {
+    CustomerEntity entity = createCustomerWithCustomNifAndEmail();
+
+    Optional<CustomerEntity> found = repository.findByNifOrEmailWhereIdNe("123456789", "test@test.com", entity.getId());
+
+    assertTrue(found.isEmpty());
+  }
+
+  @Test
+  public void shouldReturnOptionalIfCustomerByEmailOrNifWhereIdNeFound() {
+    CustomerEntity entity = createCustomerWithCustomNifAndEmail();
+    CustomerEntity second = createCustomer();
+
+    Optional<CustomerEntity> found = repository.findByNifOrEmailWhereIdNe("123456789", "test@test.com", second.getId());
+
+    assertTrue(found.isPresent());
+    assertEquals(entity.getId(), found.get().getId());
   }
 
 }

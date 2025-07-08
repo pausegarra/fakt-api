@@ -35,7 +35,7 @@ class UpdateCustomerServiceTest {
     CustomerEntity entity = CustomerMother.random().build();
 
     when(repository.getById(entity.getId())).thenReturn(Optional.of(entity));
-    when(repository.findByNifOrEmail(anyString(), anyString())).thenReturn(Optional.empty());
+    when(repository.findByNifOrEmailWhereIdNe(anyString(), anyString(), any(UUID.class))).thenReturn(Optional.empty());
     when(repository.save(any(CustomerEntity.class))).thenReturn(entity);
 
     UpdateCustomerDto dto = UpdateCustomerDto.from(
@@ -83,7 +83,7 @@ class UpdateCustomerServiceTest {
     CustomerEntity entity = CustomerMother.random().build();
 
     when(repository.getById(entity.getId())).thenReturn(Optional.of(entity));
-    when(repository.findByNifOrEmail(anyString(), anyString())).thenReturn(Optional.of(entity));
+    when(repository.findByNifOrEmailWhereIdNe(anyString(), anyString(), any(UUID.class))).thenReturn(Optional.of(entity));
 
     UpdateCustomerDto dto = UpdateCustomerDto.from(
       entity.getId().toString(),

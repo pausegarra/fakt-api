@@ -15,6 +15,8 @@ public interface CustomersRepository {
 
   Optional<CustomerEntity> findByNifOrEmail(String nif, String email);
 
+  Optional<CustomerEntity> findByNifOrEmailWhereIdNe(String nif, String email, UUID id);
+
   Optional<CustomerEntity> getById(UUID id);
 
   void delete(UUID id);

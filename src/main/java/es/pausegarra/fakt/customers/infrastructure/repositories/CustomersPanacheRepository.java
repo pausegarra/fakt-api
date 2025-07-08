@@ -62,7 +62,7 @@ public class CustomersPanacheRepository implements CustomersRepository, PanacheR
   @Override
   public Optional<CustomerEntity> findByNifOrEmail(String nif, String email) {
     return find(
-      "lower(nif) like ?1 or lower(email) like ?2",
+      "lower(nif) like lower(?1) or lower(email) like lower(?2)",
       nif,
       email
     ).firstResultOptional();
@@ -76,6 +76,16 @@ public class CustomersPanacheRepository implements CustomersRepository, PanacheR
   @Override
   public void delete(UUID id) {
     deleteById(id);
+  }
+
+  @Override
+  public Optional<CustomerEntity> findByNifOrEmailWhereIdNe(String nif, String email, UUID id) {
+    return find(
+      "(lower(nif) like lower(?1) or lower(email) like lower(?2)) and id != ?3",
+      nif,
+      email,
+      id
+    ).firstResultOptional();
   }
 
 }

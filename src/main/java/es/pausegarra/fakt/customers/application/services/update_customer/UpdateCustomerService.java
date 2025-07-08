@@ -25,7 +25,7 @@ public class UpdateCustomerService implements Service<UpdateCustomerDto, Custome
   public CustomerDto handle(@Valid UpdateCustomerDto dto) {
     CustomerEntity entity = findById(dto.id());
 
-    ensureNifOrEmailNotAlreadyExists(dto.nif(), dto.email());
+    ensureNifOrEmailNotAlreadyExists(dto.nif(), dto.email(), dto.id());
 
     CustomerEntity toUpdate = entity.update(
       dto.name(),
@@ -49,8 +49,8 @@ public class UpdateCustomerService implements Service<UpdateCustomerDto, Custome
       .orElseThrow(() -> new CustomerNotFound(id.toString()));
   }
 
-  private void ensureNifOrEmailNotAlreadyExists(String nif, String email) {
-    Optional<CustomerEntity> found = repository.findByNifOrEmail(nif, email);
+  private void ensureNifOrEmailNotAlreadyExists(String nif, String email, UUID id) {
+    Optional<CustomerEntity> found = repository.findByNifOrEmailWhereIdNe(nif, email, id);
 
     if (found.isPresent()) {
       throw new NifOrEmailAlreadyExists(nif, email);

@@ -191,14 +191,15 @@ public class UpdateCustomerIT extends IntegrationTest {
   )
   public void shouldReturn400IfEmailAlreadyExists() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomEmail();
-    UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", "null", "null", "null", "null", "null");
+    CustomerEntity toUpdate = createCustomer();
+    UpdateCustomerRequest request = new UpdateCustomerRequest(toUpdate.getName(), toUpdate.getContactName(), entity.getEmail(), "null", "null", "null", "null", "null", "null");
     String json = objectMapper.writeValueAsString(request);
 
     given()
       .body(json)
       .contentType(ContentType.JSON)
       .when()
-      .put("/customers/{id}", entity.getId())
+      .put("/customers/{id}", toUpdate.getId())
       .then()
       .statusCode(400)
       .body("code", is("NIF_OR_EMAIL_ALREADY_EXISTS"))
@@ -213,6 +214,29 @@ public class UpdateCustomerIT extends IntegrationTest {
   )
   public void shouldReturn400IfNifAlreadyExists() throws JsonProcessingException {
     CustomerEntity entity = createCustomerWithCustomNif();
+    CustomerEntity toUpdate = createCustomer();
+    UpdateCustomerRequest request = new UpdateCustomerRequest(toUpdate.getName(), toUpdate.getContactName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null");
+    String json = objectMapper.writeValueAsString(request);
+
+    given()
+      .body(json)
+      .contentType(ContentType.JSON)
+      .when()
+      .put("/customers/{id}", toUpdate.getId())
+      .then()
+      .statusCode(400)
+      .body("code", is("NIF_OR_EMAIL_ALREADY_EXISTS"))
+      .body("message", notNullValue())
+      .body("status", is(400));
+  }
+
+  @Test
+  @TestSecurity(
+    user = "test",
+    roles = {"customers#edit"}
+  )
+  public void shouldReturn200IfCustomerNifIsTheSameAsTheOldOne() throws JsonProcessingException {
+    CustomerEntity entity = createCustomerWithCustomNif();
     UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", entity.getNif(), "null", "null", "null", "null");
     String json = objectMapper.writeValueAsString(request);
 
@@ -222,10 +246,26 @@ public class UpdateCustomerIT extends IntegrationTest {
       .when()
       .put("/customers/{id}", entity.getId())
       .then()
-      .statusCode(400)
-      .body("code", is("NIF_OR_EMAIL_ALREADY_EXISTS"))
-      .body("message", notNullValue())
-      .body("status", is(400));
+      .statusCode(200);
+  }
+
+  @Test
+  @TestSecurity(
+    user = "test",
+    roles = {"customers#edit"}
+  )
+  public void shouldReturn200IfCustomerEmailIsTheSameAsTheOldOne() throws JsonProcessingException {
+    CustomerEntity entity = createCustomerWithCustomEmail();
+    UpdateCustomerRequest request = new UpdateCustomerRequest(entity.getName(), entity.getContactName(), "test@test.com", "null", "null", "null", "null", "null", "null");
+    String json = objectMapper.writeValueAsString(request);
+
+    given()
+      .body(json)
+      .contentType(ContentType.JSON)
+      .when()
+      .put("/customers/{id}", entity.getId())
+      .then()
+      .statusCode(200);
   }
 
 }
