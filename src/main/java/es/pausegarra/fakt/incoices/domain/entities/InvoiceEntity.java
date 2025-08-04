@@ -3,10 +3,7 @@ package es.pausegarra.fakt.incoices.domain.entities;
 import es.pausegarra.fakt.common.domain.audit.AuditFields;
 import es.pausegarra.fakt.customers.domain.entities.CustomerEntity;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,10 +28,11 @@ public class InvoiceEntity {
   @JoinColumn(name = "customer_id", nullable = false)
   private final CustomerEntity customer;
 
-  @Column(name = "due_date")
-  private final LocalDate dueDate;
+  @Column(name = "date")
+  private final LocalDate date;
 
   @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
+  @With
   private final List<InvoiceLineEntity> lines;
 
   @Embedded

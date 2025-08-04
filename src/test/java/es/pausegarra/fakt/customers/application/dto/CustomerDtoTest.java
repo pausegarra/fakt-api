@@ -28,4 +28,25 @@ class CustomerDtoTest {
     assertEquals(entity.getAudit().getUpdatedAt(), dto.updatedAt());
   }
 
+  @Test
+  public void shouldMapToEntity() {
+    CustomerEntity entity = CustomerMother.random().build();
+    CustomerDto dto = CustomerDto.fromEntity(entity);
+
+    CustomerEntity result = dto.toEntity();
+
+    assertEquals(dto.id(), result.getId());
+    assertEquals(dto.name(), result.getName());
+    assertEquals(dto.contactName(), result.getContactName());
+    assertEquals(dto.email(), result.getEmail());
+    assertEquals(dto.country(), result.getCountry());
+    assertEquals(dto.nif(), result.getNif());
+    assertEquals(dto.address(), result.getAddress());
+    assertEquals(dto.postcode(), result.getPostcode());
+    assertEquals(dto.city(), result.getCity());
+    assertEquals(dto.country(), result.getCountry());
+    assertEquals(dto.createdAt(), result.getAudit().getCreatedAt());
+    assertEquals(dto.updatedAt(), result.getAudit().getUpdatedAt());
+  }
+
 }

@@ -12,7 +12,7 @@ create table invoice_lines
 );
 create table invoices
 (
-    due_date       date,
+    date           date,
     created_at     timestamp(6) with time zone,
     updated_at     timestamp(6) with time zone,
     customer_id    uuid         not null,

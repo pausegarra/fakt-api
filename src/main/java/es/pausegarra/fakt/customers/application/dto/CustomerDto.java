@@ -1,5 +1,6 @@
 package es.pausegarra.fakt.customers.application.dto;
 
+import es.pausegarra.fakt.common.domain.audit.AuditFields;
 import es.pausegarra.fakt.customers.domain.entities.CustomerEntity;
 
 import java.time.Instant;
@@ -38,6 +39,26 @@ public record CustomerDto(
       entity.getAudit()
         .getUpdatedAt(),
       entity.getEmailExtraRecipients()
+    );
+  }
+
+  public CustomerEntity toEntity() {
+    return new CustomerEntity(
+      id(),
+      name(),
+      contactName(),
+      email(),
+      country(),
+      nif(),
+      address(),
+      postcode(),
+      city(),
+      county(),
+      emailExtraRecipients(),
+      new AuditFields(
+        createdAt(),
+        updatedAt()
+      )
     );
   }
 
